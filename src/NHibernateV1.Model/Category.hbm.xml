@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.0">
+	<class name="NH.Category,NHibernateV1.Model" table="Categories">
+		<id name="CategoryID" column="CategoryID" type="Int32" unsaved-value="0">
+			<generator class="identity"/>
+		</id>
+		<property name="CategoryName" column="CategoryName" type="string"/>
+		<property name="Description" column="Description" type="string"/>
+		<property name="Picture" column="Picture" type="binary"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.0">
+   <class name="NH.Customer,NHibernateV1.Model" table="Customers"> 
+      <id name="CustomerID" column="customerID" type="String" unsaved-value="">
+         <generator class="assigned"/>
+      </id>
+      <property name="CompanyName" column="companyName" type="String" />
+      <property name="ContactName" column="contactName" type="String" />
+      <property name="ContactTitle" column="contactTitle" type="String" />
+      <property name="Address" column="address" type="String" />
+      <property name="City" column="city" type="String" />
+      <property name="Region" column="region" type="String" />
+      <property name="PostalCode" column="postalCode" type="String" />
+      <property name="Country" column="country" type="String" />
+      <property name="Phone" column="phone" type="String" />
+      <property name="Fax" column="fax" type="String" />
+   </class> 
+</hibernate-mapping>

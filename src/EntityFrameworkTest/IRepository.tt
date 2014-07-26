@@ -1,0 +1,548 @@
+﻿<#@ template language="C#" debug="true" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ output extension=".cs"#>
+<#
+// This needs to be set to the .edmx file that you want to process.
+string edmxFile = FindEDMXFileName(); // @"Model1.edmx";
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+MetadataTools ef = new MetadataTools(this);
+CodeRegion region = new CodeRegion(this);
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{ 
+	public interface IRepository<T> 
+    {
+		IUnitOfWork UnitOfWork { get; set; }
+		IEnumerable<T> All();
+	    IEnumerable<T> Find(Expression<Func<T, bool>> expression);
+		void Attach(T entity);
+		void Add(T entity);
+		void Delete(T entity);
+		void Save();
+		T Single(Expression<Func<T, bool>> where);
+    }
+}<#
+
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(edmxFile);
+EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{;
+    fileManager.StartNewFile(entity.Name + "Repository.Generated.cs"); #>using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Collections.Generic;
+using EntityFrameworkTest;
+// This file is auto generated and will be overwritten as soon as the template is executed
+// Do not modify this file...
+	
+namespace <#= code.VsNamespaceSuggestion() #>
+{   
+	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#>partial class <#=code.Escape(entity)#>Repository
+	{
+		private IRepository<<#=code.Escape(entity)#>> _repository {get;set;}
+		public IRepository<<#=code.Escape(entity)#>> Repository
+		{
+			get { return _repository; }
+			set { _repository = value; }
+		}
+		
+		public <#=code.Escape(entity)#>Repository(IRepository<<#=code.Escape(entity)#>> repository, IUnitOfWork unitOfWork)
+    	{
+    		Repository = repository;
+			Repository.UnitOfWork = unitOfWork;
+    	}
+		
+		public IEnumerable<<#=code.Escape(entity)#>> All()
+		{
+			return Repository.All();
+		}
+
+		public void Add(<#=code.Escape(entity)#> entity)
+		{
+			Repository.Add(entity);
+		}
+		
+		public void Attach(<#=code.Escape(entity)#> entity)
+		{
+		    Repository.Attach(entity);
+		}
+		
+		public void Delete(<#=code.Escape(entity)#> entity)
+		{
+			Repository.Delete(entity);
+		}
+
+		public void Save()
+		{
+			Repository.Save();
+		}
+	}
+}<#	
+	if(!DoesFileExist(entity.Name + "Repository.cs"))
+	{
+		fileManager.StartNewFile(entity.Name + "Repository.cs");
+		#>using System;
+using System.Linq;
+using System.Collections.Generic;
+	
+namespace <#= code.VsNamespaceSuggestion() #>
+{   
+	<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#>partial class <#=code.Escape(entity)#>Repository
+	{
+		// Add your own data access methods.
+		// This file should not get overridden
+	}
+}<#
+	}
+	else
+	{
+		fileManager.StartNewFile(entity.Name + "Repository.cs");
+		this.Write(OutputFile(entity.Name + "Repository.cs"));
+	}
+}
+
+fileManager.StartNewFile("IUnitOfWork.cs");
+#>using System;
+using System.Data.Objects;
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+	public interface IUnitOfWork
+	{
+		void Save();
+	}
+	
+	public interface IObjectContext : IDisposable
+    {
+        IObjectSet<T> CreateObjectSet<T>() where T : class;
+        void SaveChanges();
+    }
+
+    public class ObjectContextAdapter : IObjectContext
+    {
+        private readonly ObjectContext _context;
+
+        public ObjectContextAdapter(ObjectContext context)
+        {
+            _context = context;
+        }
+
+        #region IObjectContext Members
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
+        public IObjectSet<T> CreateObjectSet<T>() where T : class
+        {
+            return _context.CreateObjectSet<T>();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        #endregion
+    }
+}<#	fileManager.StartNewFile("RepositoryIQueryableExtensions.cs");
+#>using System.Data.Objects;
+using System.Linq;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+	public static class RepositoryIQueryableExtensions
+	{
+		public static IQueryable<T> Include<T>
+			(this IQueryable<T> source, string path)
+		{
+			var objectQuery = source as ObjectQuery<T>;
+			if (objectQuery != null)
+			{
+				return objectQuery.Include(path);
+			}
+			return source;
+		}
+	}
+}<# fileManager.StartNewFile("EFRepository.cs");
+#>using System;
+using System.Collections.Generic;
+using System.Data.Objects;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+	public class EFRepository<T> : IRepository<T> where T : class
+	{
+		public IUnitOfWork UnitOfWork { get; set; }
+		private IObjectSet<T> _objectset;
+		private IObjectSet<T> ObjectSet
+		{
+            get
+			{
+				return _objectset;
+			}
+
+		}
+		
+		public EFRepository(IObjectContext objectContext)
+    {
+      _objectset = objectContext.CreateObjectSet<T>();
+    }
+
+		public virtual IEnumerable<T> All()
+		{
+			return ObjectSet.AsQueryable();
+		}
+
+		public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+		{
+			return ObjectSet.Where(expression);
+		}
+
+		public void Add(T entity)
+		{
+			ObjectSet.AddObject(entity);
+		}
+		
+		public void Attach(T entity)
+		{
+			ObjectSet.Attach(entity);
+		}
+
+		public void Delete(T entity)
+		{
+			ObjectSet.DeleteObject(entity);
+		}
+
+		public void Save()
+		{
+			UnitOfWork.Save();
+		}
+		
+		public T Single(Expression<Func<T, bool>> where)
+    {
+      return ObjectSet.Single(where);
+    }
+	}
+}<#fileManager.StartNewFile("EFUnitOfWork.cs");
+#>using System;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+    public class EFUnitOfWork : IUnitOfWork, IDisposable
+    {
+        private readonly IObjectContext _objectContext;
+
+        public EFUnitOfWork(IObjectContext objectContext)
+        {
+            _objectContext = objectContext;
+        }
+
+        #region IUnitOfWork Members
+
+        public void Save()
+        {
+            _objectContext.SaveChanges();
+        }
+
+        #endregion
+
+        public void Dispose()
+        {
+            if (_objectContext != null)
+            {
+                _objectContext.Dispose();
+            }
+            GC.SuppressFinalize(this);
+        }
+    }
+}
+<#fileManager.StartNewFile("RepositoryHelper.cs");
+#>
+using EntityFrameworkTest;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+	public static class RepositoryHelper
+	{
+		public static IRepository<T> GetRepository<T>()
+		{
+			return ObjectFactory.GetInstance<IRepository<T>>();
+		}
+
+		public static IUnitOfWork GetUnitOfWork()
+		{
+			return ObjectFactory.GetInstance<IUnitOfWork>();
+		}		
+		<# foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{; #>
+
+		public static <#=code.Escape(entity)#>Repository Get<#=code.Escape(entity)#>Repository()
+		{
+			return ObjectFactory.GetInstance<<#=code.Escape(entity)#>Repository>();
+		}
+
+		public static <#=code.Escape(entity)#>Repository Get<#=code.Escape(entity)#>Repository(IUnitOfWork unitOfWork)
+		{
+			return new <#=code.Escape(entity)#>Repository(GetRepository<<#=code.Escape(entity)#>>(), unitOfWork);
+		}		
+		
+		public static <#=code.Escape(entity)#>Repository Get<#=code.Escape(entity)#>Repository(IObjectContext objectcontext)
+        {
+            return ObjectFactory.GetInstance<<#=code.Escape(entity)#>Repository, IObjectContext>(objectcontext);
+        }
+
+        public static <#=code.Escape(entity)#>Repository Get<#=code.Escape(entity)#>Repository(IUnitOfWork unitOfWork, IObjectContext objectcontext)
+        {
+            return ObjectFactory.GetInstance<<#=code.Escape(entity)#>Repository, IObjectContext, IUnitOfWork>(objectcontext, unitOfWork);
+        }	
+<# } #>
+    }
+}
+<#fileManager.StartNewFile("ObjectFactory.cs");
+#>
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Data.Objects;
+using Microsoft.Practices.Unity;
+using EntityFrameworkTest;
+
+namespace <#= code.VsNamespaceSuggestion() #>
+{
+    public class ObjectFactory
+    {
+       private static IUnityContainer container;
+
+       static ObjectFactory()
+       {
+            container = new UnityContainer();
+			      container.RegisterType<IUnitOfWork, EFUnitOfWork>();	
+			      container.RegisterType<ObjectContext, <#=code.Escape(container)#>>(new InjectionConstructor());
+            container.RegisterType<IObjectContext, ObjectContextAdapter>();
+		<# foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{; #>
+            container.RegisterType<IRepository<<#=code.Escape(entity)#>>,EFRepository<<#=code.Escape(entity)#>>>();	
+<# } #>
+        }
+         
+        public static T GetInstance<T>()
+        {
+            return container.Resolve<T>();
+        }
+        
+        public static T GetInstance<T, U>(U u)
+        {
+           return container.Resolve<T>(new DependencyOverride<U>(u));
+        }
+
+        public static T GetInstance<T, U, Y>(U u, Y y)
+        {
+            return container.Resolve<T>(new DependencyOverride<U>(u), new DependencyOverride<Y>(y));
+        }
+
+    }
+	
+}<#fileManager.StartNewFile("IStoredProcedureFunctionsDAO.cs");
+#>using System;
+using System.Data.Objects;
+using System.Collections.Generic;
+
+namespace <#= code.VsNamespaceSuggestion() #>.Repositories
+{
+    public interface IStoredProcedureFunctionsDAO
+    {
+   
+<#   region.Begin("Function Imports");
+
+		foreach (EdmFunction edmFunction in container.FunctionImports)
+		{
+			var parameters = FunctionImportParameter.Create(edmFunction.Parameters, code, ef);
+			string paramList = String.Join(", ", parameters.Select(p => p.FunctionParameterType + " " + p.FunctionParameterName).ToArray());
+			string returnTypeElement = "int";
+			if (edmFunction.ReturnParameter == null)
+			{
+#>
+
+	    void <#=code.Escape(edmFunction)#>(<#=paramList#>);
+<#
+			}
+			else
+			{
+				returnTypeElement = code.Escape(ef.GetElementType(edmFunction.ReturnParameter.TypeUsage));
+#>
+
+	    ObjectResult<<#=returnTypeElement#>> <#=code.Escape(edmFunction)#>(<#=paramList#>);
+
+<#
+			}
+		}
+		
+		region.End();
+
+#> 
+    }
+}
+<#fileManager.StartNewFile("StoredProcedureFunctionsDAO.Generated.cs");
+#>
+using System;
+using System.Data.Objects;
+
+namespace <#= code.VsNamespaceSuggestion() #>.Repositories
+{
+    public partial class StoredProcedureFunctionsDAO : IStoredProcedureFunctionsDAO
+    {
+	    private readonly ObjectContext dbObjectcontext;
+	   
+        public StoredProcedureFunctionsDAO(ObjectContext _dbObjectcontext)
+        {
+            dbObjectcontext = _dbObjectcontext;
+        }
+
+
+     <#
+        region.Begin("Function Imports");
+
+		foreach (EdmFunction edmFunction in container.FunctionImports)
+		{
+			var parameters = FunctionImportParameter.Create(edmFunction.Parameters, code, ef);
+			string paramList = String.Join(", ", parameters.Select(p => p.FunctionParameterType + " " + p.FunctionParameterName).ToArray());
+			string returnTypeElement = "int";
+			if (edmFunction.ReturnParameter == null)
+			{
+#>
+
+	<#=Accessibility.ForMethod(edmFunction)#> void <#=code.Escape(edmFunction)#>(<#=paramList#>)
+	{
+<#
+			}
+			else
+			{
+				returnTypeElement = code.Escape(ef.GetElementType(edmFunction.ReturnParameter.TypeUsage));
+#>
+
+	<#=Accessibility.ForMethod(edmFunction)#> ObjectResult<<#=returnTypeElement#>> <#=code.Escape(edmFunction)#>(<#=paramList#>)
+	{
+<#
+			}
+
+			foreach (var parameter in parameters)
+			{
+				if (!parameter.NeedsLocalVariable)
+				{
+					continue;
+				}
+#>
+		ObjectParameter <#=parameter.LocalVariableName#>;
+		if (<#=parameter.IsNullableOfT ? parameter.FunctionParameterName + ".HasValue" : parameter.FunctionParameterName + " != null"#>)
+		{
+			<#=parameter.LocalVariableName#> = new ObjectParameter("<#=parameter.EsqlParameterName#>", <#=parameter.FunctionParameterName#>);
+		}
+		else
+		{
+			<#=parameter.LocalVariableName#> = new ObjectParameter("<#=parameter.EsqlParameterName#>", typeof(<#=parameter.RawClrTypeName#>));
+		}
+		
+<#
+			}
+			if (edmFunction.ReturnParameter == null)
+			{
+#>
+		     dbObjectcontext.ExecuteFunction("<#=edmFunction.Name#>"<#=code.StringBefore(", ", String.Join(", ", parameters.Select(p => p.ExecuteParameterName).ToArray()))#>);
+	}
+<#
+			}
+			else
+			{
+#>
+		return dbObjectcontext.ExecuteFunction<<#=returnTypeElement#>>("<#=edmFunction.Name#>"<#=code.StringBefore(", ", String.Join(", ", parameters.Select(p => p.ExecuteParameterName).ToArray()))#>);
+	}
+<#
+			}
+		}
+		region.End();
+
+#>
+    }
+}
+<#if(!DoesFileExist("StoredProcedureFunctionsDAO.cs"))
+	{
+		fileManager.StartNewFile("StoredProcedureFunctionsDAO.cs");
+#>using System;
+namespace <#= code.VsNamespaceSuggestion() #>.Repositories
+{
+    public partial class StoredProcedureFunctionsDAO : IStoredProcedureFunctionsDAO
+    {
+    }
+}<#
+	}
+	else
+	{
+		fileManager.StartNewFile("StoredProcedureFunctionsDAO.cs");
+		this.Write(OutputFile("StoredProcedureFunctionsDAO.cs"));
+	}
+#><#	fileManager.Process();
+#>
+
+
+<#+
+
+bool DoesFileExist(string filename)
+{			
+	return File.Exists(Path.Combine(GetCurrentDirectory(),filename));	
+}
+
+string OutputFile(string filename)
+{
+	using(StreamReader sr = new StreamReader(Path.Combine(GetCurrentDirectory(),filename)))
+	{
+		string contents = sr.ReadToEnd();
+		return contents;
+	}
+}
+
+string GetCurrentDirectory()
+{
+	string executingDirectoryName = "";
+	string stackTraceFileName = new StackTrace(true).GetFrame(0).GetFileName();
+	if (String.IsNullOrEmpty(stackTraceFileName))
+	{
+		throw new ArgumentException("No value was specified for the 'directoryName' configuration parameter" +
+			", and we could not figure out the file name from the stack trace (most likely because of running " +
+			"the template with debug='False' specified in the <\u0023@ template \u0023> directive.");
+	}
+	else
+	{		
+		executingDirectoryName = Path.GetDirectoryName(stackTraceFileName);
+	}	
+	return executingDirectoryName;
+}
+
+string FindEDMXFileName()
+{
+	string edmxFile = "";
+				
+	string[] entityFrameworkFiles = Directory.GetFiles(GetCurrentDirectory(), "*.edmx");
+	if(entityFrameworkFiles.Length > 0)
+		edmxFile = entityFrameworkFiles[0];
+	
+	return edmxFile;
+}
+#>

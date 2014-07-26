@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.0">
+   <class name="NH.Product, NHibernateV1.Model" table="Products"> 
+      <id name="ProductID" column="productID" type="Int32" unsaved-value="0">
+         <generator class="identity"/>
+      </id>
+      <property name="ProductName" column="ProductName" type="String" />
+      <property name="QuantityPerUnit" column="QuantityPerUnit" type="String" />
+      <property name="UnitPrice" column="unitPrice" type="Decimal" />
+      <property name="UnitsInStock" column="unitsInStock" type="Int32" />
+      <property name="UnitsOnOrder" column="unitsOnOrder" type="Int32" />
+      <property name="ReorderLevel" column="reorderLevel" type="Int32" />
+      <property name="Discontinued" column="discontinued" type="Boolean" />
+
+     <property name="SupplierID" column="SupplierID" type="Int32" />
+     <property name="CategoryID" column="CategoryID" type="Int32" />
+   </class> 
+</hibernate-mapping>

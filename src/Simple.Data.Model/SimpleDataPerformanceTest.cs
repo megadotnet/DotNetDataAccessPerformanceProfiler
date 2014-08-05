@@ -83,20 +83,33 @@ namespace Simple.Data.Model
        {
            for (int i = 0; i < repeatTime; i++)
            {
-               //insert
+
+               var customer = new Customer
+               {
+                   CompanyName = "Newcompanyname",
+                   ContactName = "ccc",
+                   Address = "asdcasdws",
+                   ContactTitle = "asdf",
+                   City = "kuna",
+                   Country = "china",
+                   Phone = "231",
+                   PostalCode = "234",
+                   Region = "asia",
+                   CustomerID = "9011"
+               };
+
+               _db.Customers.Insert(customer);
+               //update
+               customer.ContactName = "updated contact";
+               _db.Customers.Update(customer);
+               _db.Customers.DeleteByCustomerID(customer.CustomerID);
+
+               //insert category
                var category = new Category {  CategoryName = "Shipment",  Description = "for test" };
                var newCategory = _db.Categories.Insert(category);
 
                var product = new Product { ProductName = "productname", CategoryID = newCategory.CategoryID, SupplierID = 1 };
                var newProduct = _db.Products.Insert(product);
-
-               var customer = new Customer { CompanyName = "Newcompanyname", ContactName = "ccc", Address = "asdcasdws" , ContactTitle="asdf", City="kuna", Country="china"
-               , Fax="23", Phone="231", PostalCode="234", Region="asia"};
-               //var newCustomer = _db.Customers.Insert(customer);
-
-               //update
-               //newCustomer.ContactName = "updated contact";
-               //_db.Customers.Update(newCustomer);
 
                newCategory.CategoryName = "Updated";
                _db.Categories.Update(newCategory);
@@ -108,8 +121,7 @@ namespace Simple.Data.Model
                //delete
                _db.Products.DeleteByProductID(newProduct.ProductID); 
                _db.Categories.DeleteByCategoryID(newCategory.CategoryID);
-              // _db.Customers.DeleteByCustomerID(newCustomer.CustomerID);
-            
+
            }
        });
         }

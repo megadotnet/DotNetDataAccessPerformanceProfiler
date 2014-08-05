@@ -6,6 +6,11 @@ NHibernate v1.02
 
 Enterprise library 5
 
+Simple.Data
+
+Dapper
+
+
 ## License
 Copyright (c) 2007-2014 Megadotnet Contributors
 

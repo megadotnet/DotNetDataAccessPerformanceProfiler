@@ -24,6 +24,8 @@ namespace TelerikDataAccess.Model
     /// Class TelerikDataAccessPerformanceTest
     /// </summary>
     /// <remarks>http://wintersun.cnblogs.com/</remarks>
+    /// <seealso cref="http://www.telerik.com/forums/openaccess-nuget-package-and-cannot-find-resource-entitiesmodel-rlinq-embedded-in-assembly-exception"/>
+    /// <seealso cref="http://docs.telerik.com/data-access/developers-guide/integrating-data-access-in-your-solution/external-tools-howto-integrate-enhancer-msbuild"/>
     public class TelerikDataAccessPerformanceTest : IPerformanceTest
     {
         /// <summary>

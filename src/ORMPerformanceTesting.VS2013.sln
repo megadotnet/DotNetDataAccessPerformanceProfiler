@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMain", "TestMain.csproj", "{7C68282E-44F7-40A5-8242-FCEDEA5CF64E}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Free", "Free", "{C4BB051F-32BC-4422-B299-E8940E1F1B91}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelerikDataAccess.Model", "TelerikDataAccess.Model\TelerikDataAccess.Model.csproj", "{C50145E6-A244-4F1F-B41F-90D1925B4A00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperExtensions.Model", "DapperExtensions.Model\DapperExtensions.Model.csproj", "{E31DAD1C-2A06-4280-83FB-3DBBE7631972}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{C50145E6-A244-4F1F-B41F-90D1925B4A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C50145E6-A244-4F1F-B41F-90D1925B4A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C50145E6-A244-4F1F-B41F-90D1925B4A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E31DAD1C-2A06-4280-83FB-3DBBE7631972}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31DAD1C-2A06-4280-83FB-3DBBE7631972}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31DAD1C-2A06-4280-83FB-3DBBE7631972}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31DAD1C-2A06-4280-83FB-3DBBE7631972}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +106,6 @@ Global
 		{A8B7D61B-352A-4B12-8873-21C4D5AE0409} = {6542D568-8477-4120-9851-4517B2E54837}
 		{5D8601AA-1FA3-49F7-92EF-FF6C6158EE9C} = {6542D568-8477-4120-9851-4517B2E54837}
 		{C50145E6-A244-4F1F-B41F-90D1925B4A00} = {C4BB051F-32BC-4422-B299-E8940E1F1B91}
+		{E31DAD1C-2A06-4280-83FB-3DBBE7631972} = {6542D568-8477-4120-9851-4517B2E54837}
 	EndGlobalSection
 EndGlobal

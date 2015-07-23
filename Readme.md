@@ -4,7 +4,7 @@ DotNet DataAccess Performance Profiler
 
 NHibernate v1.02
 
-Enterprise library 5
+Enterprise library 6
 
 Simple.Data
 
@@ -12,7 +12,7 @@ Dapper
 
 
 ## License
-Copyright (c) 2007-2014 Megadotnet Contributors
+Copyright (c) 2007-2015 Megadotnet Contributors
 
 Other software included in this distribution is owned and
 licensed separately, see the included license files for details.

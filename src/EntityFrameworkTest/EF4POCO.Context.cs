@@ -58,5 +58,6 @@ namespace EntityFrameworkTest
         private ObjectSet<Products> _products;
 
         #endregion
+
     }
 }

@@ -74,6 +74,7 @@ namespace EntityFrameworkTest
         }
 
         #endregion
+
         #region Navigation Properties
     
         public virtual Categories Categories
@@ -92,6 +93,7 @@ namespace EntityFrameworkTest
         private Categories _categories;
 
         #endregion
+
         #region Association Fixup
     
         private void FixupCategories(Categories previousValue)
@@ -111,5 +113,6 @@ namespace EntityFrameworkTest
         }
 
         #endregion
+
     }
 }

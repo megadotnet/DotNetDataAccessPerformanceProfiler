@@ -44,6 +44,7 @@ namespace EntityFrameworkTest
         }
 
         #endregion
+
         #region Navigation Properties
     
         public virtual ICollection<Products> Products
@@ -79,6 +80,7 @@ namespace EntityFrameworkTest
         private ICollection<Products> _products;
 
         #endregion
+
         #region Association Fixup
     
         private void FixupProducts(object sender, NotifyCollectionChangedEventArgs e)
@@ -104,5 +106,6 @@ namespace EntityFrameworkTest
         }
 
         #endregion
+
     }
 }

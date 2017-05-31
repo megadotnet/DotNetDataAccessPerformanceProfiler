@@ -1,15 +1,37 @@
-DotNet DataAccess Performance Profiler 
+DotNet DataAccess Component Performance Profiler 
 =============
-## Dependency
+## Target components
 
 NHibernate v1.02
 
-Enterprise library 6
+Enterprise Library Data Access Application Block 6
 
 Simple.Data
 
 Dapper
 
+SubSonic 3.0
+
+Entity Framework
+
+LinqToSQL
+
+Telerik Open Access
+
+## Dependency
+
+.Net Framework 4.5
+Unity 3.0
+CommonServiceLocator 1.3
+SQL SERVER 2008 R2 or later
+
+## How to add new DAL provider?
+Create new library project and add new class inherit from IPerformanceTest.
+
+Set build output path as Parent Project output: 
+```
+..\bin\Debug\
+```
 
 ## License
 Copyright (c) 2007-2015 Megadotnet Contributors

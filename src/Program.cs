@@ -41,6 +41,7 @@ namespace TestMain
             var sb = new StringBuilder();
             var testmodule = new ServiceLocatorConfig();
             List<IPerformanceTest> genericInstances = testmodule.GenericOverload_GetAllInstances();
+            //Default dal 
             string testSuitNames = "SqlClient(SN), NHibernateV1(NH), LinqToEntity(LE), LinqToSql(LQ)";
 
             var namelist = new List<string>();
@@ -50,12 +51,12 @@ namespace TestMain
             {
                 genericInstances.ForEach(
                     tp =>
-                        {
-                            tp.FetchSingleTest(1);
-                            tp.FetchAllTest(1);
-                            tp.WriteTest(1);
-                            namelist.Add(tp.GetType().Name);
-                        });
+                    {
+                        tp.FetchSingleTest(1);
+                        tp.FetchAllTest(1);
+                        tp.WriteTest(1);
+                        namelist.Add(tp.GetType().Name);
+                    });
             }
 
             testSuitNames = string.Join(" , ", namelist.ToArray());
@@ -70,6 +71,79 @@ namespace TestMain
 
             // sb.AppendLine(testSuitNames);
             // test fetch single performance
+            TestFetchSinglePerformance(sb, genericInstances, testSuitNames, repeatTimes);
+
+            sb.AppendLine();
+
+            // test fetch all performance
+            TestFetchAllPerformance(sb, genericInstances, repeatTimes);
+
+            // test write performance
+            TestWritePerformance(sb, genericInstances, repeatTimes);
+
+            OutputToFile(sb);
+        }
+
+        /// <summary>
+        /// TestWritePerformance
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="genericInstances"></param>
+        /// <param name="repeatTimes"></param>
+        private static void TestWritePerformance(StringBuilder sb, List<IPerformanceTest> genericInstances, int[] repeatTimes)
+        {
+            sb.AppendLine(string.Format("Compare  {0}  performance of {0}", "write"));
+            for (int i = 0; i < repeatTimes.Length; ++i)
+            {
+                sb.AppendLine();
+                sb.AppendLine(string.Format("Repeat Time = {0}", repeatTimes[i]));
+                genericInstances.ForEach(
+                    tp =>
+                    {
+                        sb.Append(tp.WriteTest(repeatTimes[i]));
+                        sb.Append("\t");
+                    });
+                sb.AppendLine();
+            }
+
+            sb.AppendLine();
+        }
+
+        /// <summary>
+        /// TestFetchAllPerformance
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="genericInstances"></param>
+        /// <param name="repeatTimes"></param>
+        private static void TestFetchAllPerformance(StringBuilder sb, List<IPerformanceTest> genericInstances, int[] repeatTimes)
+        {
+            sb.AppendLine(string.Format("Compare  {0} performance of", "fetch all"));
+            for (int i = 0; i < repeatTimes.Length; ++i)
+            {
+                sb.AppendLine();
+                sb.AppendLine(string.Format("Repeat Time = {0}", repeatTimes[i]));
+                genericInstances.ForEach(
+                    tp =>
+                    {
+                        sb.Append(tp.FetchAllTest(repeatTimes[i]));
+                        sb.Append("\t");
+                    });
+
+                sb.AppendLine();
+            }
+
+            sb.AppendLine();
+        }
+
+        /// <summary>
+        /// TestFetchSinglePerformance
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="genericInstances"></param>
+        /// <param name="testSuitNames"></param>
+        /// <param name="repeatTimes"></param>
+        private static void TestFetchSinglePerformance(StringBuilder sb, List<IPerformanceTest> genericInstances, string testSuitNames, int[] repeatTimes)
+        {
             sb.AppendLine(string.Format("Compare {0} performance", "fetch single"));
             sb.AppendLine(testSuitNames);
 
@@ -80,51 +154,12 @@ namespace TestMain
 
                 genericInstances.ForEach(
                     tp =>
-                        {
-                            sb.Append(tp.FetchSingleTest(repeatTimes[i]));
-                            sb.Append("\t");
-                        });
+                    {
+                        sb.Append(tp.FetchSingleTest(repeatTimes[i]));
+                        sb.Append("\t");
+                    });
                 sb.AppendLine();
             }
-
-            sb.AppendLine();
-
-            // test fetch all performance
-            sb.AppendLine(string.Format("Compare  {0} performance of", "fetch all"));
-            for (int i = 0; i < repeatTimes.Length; ++i)
-            {
-                sb.AppendLine();
-                sb.AppendLine(string.Format("Repeat Time = {0}", repeatTimes[i]));
-                genericInstances.ForEach(
-                    tp =>
-                        {
-                            sb.Append(tp.FetchAllTest(repeatTimes[i]));
-                            sb.Append("\t");
-                        });
-
-                sb.AppendLine();
-            }
-
-            sb.AppendLine();
-
-            // test write performance
-            sb.AppendLine(string.Format("Compare  {0}  performance of {0}", "write"));
-            for (int i = 0; i < repeatTimes.Length; ++i)
-            {
-                sb.AppendLine();
-                sb.AppendLine(string.Format("Repeat Time = {0}", repeatTimes[i]));
-                genericInstances.ForEach(
-                    tp =>
-                        {
-                            sb.Append(tp.WriteTest(repeatTimes[i]));
-                            sb.Append("\t");
-                        });
-                sb.AppendLine();
-            }
-
-            sb.AppendLine();
-
-            OutputToFile(sb);
         }
 
         /// <summary>

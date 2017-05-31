@@ -30,6 +30,16 @@ namespace EntDAAB.Model
 
         #endregion
 
+        /// <summary>
+        /// EntLibDAABPerformanceTest
+        /// </summary>
+        static EntLibDAABPerformanceTest()
+        {
+            //http://codepattern.net/Blog/post/Database-provider-factory-not-set-for-the-static-DatabaseFactory
+            //https://msdn.microsoft.com/en-us/library/dn440726(v=pandp.60).aspx
+            DatabaseFactory.SetDatabaseProviderFactory(new DatabaseProviderFactory());
+        }
+
         #region Constructors and Destructors
 
         /// <summary>

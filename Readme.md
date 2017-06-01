@@ -18,6 +18,8 @@ LinqToSQL
 
 Telerik Open Access
 
+Linq2db 1.8
+
 ## Dependency
 
 .Net Framework 4.5
@@ -26,12 +28,17 @@ CommonServiceLocator 1.3
 SQL SERVER 2008 R2 or later
 
 ## How to add new DAL provider?
-Create new library project and add new class inherit from IPerformanceTest.
+1.Create new library project and add new class inherit from IPerformanceTest.
+  Added CRUD logic with database.
 
-Set build output path as Parent Project output: 
+2.Set build output path as Parent Project output: 
 ```
 ..\bin\Debug\
 ```
+
+3. Added specifc register type for Unity config files.  
+
+4. Rebuild whole solution and run Main App.
 
 ## License
 Copyright (c) 2007-2015 Megadotnet Contributors

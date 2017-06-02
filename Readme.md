@@ -20,6 +20,8 @@ Telerik Open Access
 
 Linq2db 1.8
 
+PetaPoco  5.1
+
 ## Dependency
 
 .Net Framework 4.5
@@ -39,6 +41,9 @@ SQL SERVER 2008 R2 or later
 3. Added specifc register type for Unity config files.  
 
 4. Rebuild whole solution and run Main App.
+
+## RoadMap
+1. Prepare integrated with BenchmarkDotNet and DashBoard
 
 ## License
 Copyright (c) 2007-2015 Megadotnet Contributors

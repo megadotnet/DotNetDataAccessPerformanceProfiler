@@ -37,9 +37,10 @@ namespace PetaPoco.Model
             return Utility.PerformanceWatch(
               () =>
           {
+              var db = new TestPerformaceDBConnectionDB();
+
               for (int i = 0; i < repeatTime; i++)
               {
-                  var db = new TestPerformaceDBConnectionDB();
                   var customers = db.Query<Customer>("select * from Customers").ToList();
                   var product = db.Query<Product>("select * from Products").ToList();
                   var categories = db.Query<Category>("select * from Categories").ToList();
@@ -57,9 +58,18 @@ namespace PetaPoco.Model
             return Utility.PerformanceWatch(
     () =>
     {
-    
-          });
-    }
+
+        var db = new TestPerformaceDBConnectionDB();
+
+        for (int i = 0; i < repeatTime; i++)
+        {
+            var customers = db.Query<Customer>("select * from Customers where CustomerID = '10'").FirstOrDefault();
+            var product = db.Query<Product>("select * from Products where ProductID = 10").FirstOrDefault();
+            var categories = db.Query<Category>("select * from Categories where CategoryID = 10").FirstOrDefault();
+        }
+
+    });
+        }
 
         /// <summary>
         /// WriteTest

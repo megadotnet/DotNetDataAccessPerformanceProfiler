@@ -40,9 +40,9 @@ namespace PetaPoco.Model
               for (int i = 0; i < repeatTime; i++)
               {
                   var db = new TestPerformaceDBConnectionDB();
-                  var customer=db.Query<Customer>("select * from Customer");
-                  var product = db.Query<Product>("select * from Product");
-                  var category = db.Query<Category>("select * from Category");
+                  var customers = db.Query<Customer>("select * from Customers").ToList();
+                  var product = db.Query<Product>("select * from Products").ToList();
+                  var categories = db.Query<Category>("select * from Categories").ToList();
               }
           });
         }

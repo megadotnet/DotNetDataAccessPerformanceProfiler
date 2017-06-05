@@ -205,6 +205,9 @@ namespace CtripDAL.Model.Dao
             }
         }
 
-        
+        public int InsertCustomersGen(CustomersGen customersGen)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

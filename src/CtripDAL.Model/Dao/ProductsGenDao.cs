@@ -11,7 +11,7 @@ using CtripDAL.Model.Interface.IDao;
 namespace CtripDAL.Model.Dao
 {
     /// <summary>
-    ///
+    ///ProductsGenDao
     /// </summary>
     public partial class ProductsGenDao : IProductsGenDao
     {
@@ -203,6 +203,9 @@ namespace CtripDAL.Model.Dao
             }
         }
 
-        
+        public int InsertProductsGen(ProductsGen productsGen)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

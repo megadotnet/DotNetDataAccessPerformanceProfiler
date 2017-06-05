@@ -23,6 +23,7 @@ namespace CtripDAL.Model.Test
         public void TestCount()
         {
             long ret = categoriesGenDao.Count();
+            Assert.IsTrue(ret > 0);
         }
 		
 	    [TestMethod]

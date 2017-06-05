@@ -11,7 +11,7 @@ using CtripDAL.Model.Interface.IDao;
 namespace CtripDAL.Model.Dao
 {
     /// <summary>
-    ///
+    ///CategoriesGenDao
     /// </summary>
     public partial class CategoriesGenDao : ICategoriesGenDao
     {
@@ -191,6 +191,9 @@ namespace CtripDAL.Model.Dao
             }
         }
 
-        
+        public int InsertCategoriesGen(CategoriesGen categoriesGen)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

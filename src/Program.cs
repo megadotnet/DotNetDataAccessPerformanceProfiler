@@ -25,7 +25,7 @@ namespace TestMain
     using DBPerformanceTest.Core;
 
     /// <summary>
-    /// The program.
+    /// The DBPerformanceTest program.
     /// </summary>
     /// <remarks>http://wintersun.cnblogs.com/</remarks>
     internal class Program

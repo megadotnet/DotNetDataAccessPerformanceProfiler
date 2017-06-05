@@ -22,6 +22,8 @@ Linq2db 1.8
 
 PetaPoco  5.1
 
+Ctrip DAL
+
 ## Dependency
 
 .Net Framework 4.5

@@ -2,34 +2,34 @@ DotNet DataAccess Component Performance Profiler
 =============
 ## Target components
 
-NHibernate v1.02
+*   NHibernate v1.02
 
-Enterprise Library Data Access Application Block 6
+*   Enterprise Library Data Access Application Block 6
 
-Simple.Data
+*   Simple.Data
 
-Dapper
+*   Dapper
 
-SubSonic 3.0
+*   SubSonic 3.0
 
-Entity Framework
+*   Entity Framework
 
-LinqToSQL
+*   LinqToSQL
 
-Telerik Open Access
+*   Telerik Open Access
 
-Linq2db 1.8
+*   Linq2db 1.8
 
-PetaPoco  5.1
+*   PetaPoco  5.1
 
-Ctrip DAL
+*   [Ctrip DAL C# client](https://github.com/ctripcorp/dal/wiki/C%23%E5%AE%A2%E6%88%B7%E7%AB%AF-%E9%9B%86%E6%88%90%E8%AF%B4%E6%98%8E)
 
 ## Dependency
 
-.Net Framework 4.5
-Unity 3.0
-CommonServiceLocator 1.3
-SQL SERVER 2008 R2 or later
+*   .Net Framework 4.5
+*   Unity 3.0
+*   CommonServiceLocator 1.3
+*   SQL SERVER 2012 R2 or later
 
 ## How to add new DAL provider?
 1.Create new library project and add new class inherit from IPerformanceTest.
@@ -48,7 +48,7 @@ SQL SERVER 2008 R2 or later
 1. Prepare integrated with BenchmarkDotNet and DashBoard
 
 ## License
-Copyright (c) 2007-2015 Megadotnet Contributors
+Copyright (c) 2007-2017 Megadotnet Contributors
 
 Other software included in this distribution is owned and
 licensed separately, see the included license files for details.

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CtripDALPerformanceTest.cs" />
     <Compile Include="DalFactory.cs" />
     <Compile Include="Dao\CategoriesGenDao.cs" />
     <Compile Include="Dao\CustomersGenDao.cs" />
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\CtripDAL.Arch.Data\Arch.Data.csproj">
       <Project>{b97cd6e2-93e7-4e80-8dd8-8a2f7b6f71d3}</Project>
       <Name>Arch.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBPerformanceTest.Core\DBPerformanceTest.Core.csproj">
+      <Project>{D33E9D74-23AE-4657-A670-1718300138B8}</Project>
+      <Name>DBPerformanceTest.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

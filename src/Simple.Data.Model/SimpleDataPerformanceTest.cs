@@ -111,6 +111,7 @@ namespace Simple.Data.Model
                var product = new Product { ProductName = "productname", CategoryID = newCategory.CategoryID, SupplierID = 1 };
                var newProduct = _db.Products.Insert(product);
 
+               //update
                newCategory.CategoryName = "Updated";
                _db.Categories.Update(newCategory);
 

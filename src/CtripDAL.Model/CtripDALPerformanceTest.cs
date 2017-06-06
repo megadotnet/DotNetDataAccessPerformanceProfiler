@@ -99,9 +99,7 @@ for (int i = 0; i < repeatTime; i++)
 
         int customerIdFromDb=customersGenDao.InsertCustomersGen(customer);
 
-
         var catagore = new CategoriesGen() { CategoryName = "xdf", Description = "asfb" };
-
         int categoryIDfromDb=categoriesGenDao.InsertCategoriesGen(
             catagore
             );
@@ -113,9 +111,15 @@ for (int i = 0; i < repeatTime; i++)
             CategoryID = categoryIDfromDb
         };
 
-        productsGenDao.InsertProductsGen(product
+        //Insert
+        product.ProductID=productsGenDao.InsertProductsGen(product
            );
 
+        product.ProductName = "ProductNameChange";
+        //Update
+        productsGenDao.UpdateProductsGen(product);
+
+        //Delete
         productsGenDao.DeleteProductsGen(product);
         customersGenDao.DeleteCustomersGen(customer);
         categoriesGenDao.DeleteCategoriesGen(catagore);

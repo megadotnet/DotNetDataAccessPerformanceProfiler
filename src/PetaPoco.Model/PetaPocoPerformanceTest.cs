@@ -26,6 +26,8 @@ namespace PetaPoco.Model
     /// </summary>
     public class PetaPocoPerformanceTest : IPerformanceTest
     {
+        private TestPerformaceDBConnectionDB db = new TestPerformaceDBConnectionDB();
+
         /// <summary>
         /// FetchAllTest
         /// </summary>
@@ -37,8 +39,7 @@ namespace PetaPoco.Model
             return Utility.PerformanceWatch(
               () =>
           {
-              var db = new TestPerformaceDBConnectionDB();
-
+           
               for (int i = 0; i < repeatTime; i++)
               {
                   var customers = db.Query<Customer>("select * from Customers").ToList();
@@ -57,10 +58,8 @@ namespace PetaPoco.Model
         {
             return Utility.PerformanceWatch(
     () =>
-    {
-
-        var db = new TestPerformaceDBConnectionDB();
-
+    { 
+  
         for (int i = 0; i < repeatTime; i++)
         {
             var customers = db.Query<Customer>("select * from Customers where CustomerID = '10'").FirstOrDefault();
@@ -76,11 +75,50 @@ namespace PetaPoco.Model
         /// </summary>
         /// <param name="repeatTime"></param>
         /// <returns></returns>
+        /// <seealso cref="https://github.com/CollaboratingPlatypus/PetaPoco/wiki/Inserting"/>
         public long WriteTest(int repeatTime)
         {
             return Utility.PerformanceWatch(
 () =>
 {
+    for (int i = 0; i < repeatTime; i++)
+    {
+        var customer = new Customer
+        {
+            CompanyName = "Newcvompanyname",
+            ContactName = "ccc",
+            Address = "asdcadsdws",
+            ContactTitle = "adsdf",
+            City = "ku2na",
+            Country = "chi2na",
+            Phone = "231",
+            PostalCode = "234",
+            Region = "ASIA",
+            CustomerID = "100"+ new Random().Next(0,100)
+        };
+
+        // Tell PetaPoco to insert it
+        var customerid = db.Insert(customer);
+        customer.Address = "AddressChanged";
+        customer.ContactTitle = "ProductManager";
+
+        // Tell PetaPoco to update the DB
+        db.Update(customer);
+
+        var cat = new Category { CategoryName = "Widgets234", Description = "Widgets are 43the ……" };
+        var catid = db.Insert(cat);
+        int categoryId = Convert.ToInt32(catid);
+        cat.CategoryID = categoryId;
+
+        var newProduct = new Product { ProductName = "Blue Widget234", UnitPrice = 35.56M, CategoryID = categoryId };
+        var productid = db.Insert(newProduct);
+        newProduct.ProductID = Convert.ToInt32(productid);
+
+        //delete all of them
+        db.Delete(customer);
+        db.Delete(newProduct);
+        db.Delete(cat);
+    }
 
 });
         }

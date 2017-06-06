@@ -75,12 +75,16 @@ namespace CtripDAL.Model.Test
             int ret = customersGenDao.InsertCustomersGen(customersGen);
             Assert.IsTrue(ret > 0);
         }
-		
+
+        /// <summary>
+        /// TestUpdateCustomersGen
+        /// </summary>
         [TestMethod]
         public void TestUpdateCustomersGen()
         {
-			//CustomersGen customersGen;
-            //int ret = customersGenDao.UpdateCustomersGen(customersGen);
+			CustomersGen customersGen=new CustomersGen() {  CustomerID="11", CompanyName="UTChanged"} ;
+            int ret = customersGenDao.UpdateCustomersGen(customersGen);
+            Assert.IsTrue(ret > 0);
         }
 		
     }

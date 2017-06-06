@@ -58,8 +58,22 @@ namespace CtripDAL.Model.Test
 	    [TestMethod]
         public void TestInsertCustomersGen()
         {
-			//CustomersGen customersGen;
-            //int ret = customersGenDao.InsertCustomersGen(customersGen);
+            var customersGen = new CustomersGen
+            {
+                CompanyName = "Newcvompanyname",
+                ContactName = "ccc",
+                Address = "asdcadsdws",
+                ContactTitle = "adsdf",
+                City = "ku2na",
+                Country = "chi2na",
+                Phone = "231",
+                PostalCode = "234",
+                Region = "ASIA",
+                CustomerID = "9012"
+            };
+
+            int ret = customersGenDao.InsertCustomersGen(customersGen);
+            Assert.IsTrue(ret > 0);
         }
 		
         [TestMethod]

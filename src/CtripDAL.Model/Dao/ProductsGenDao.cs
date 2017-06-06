@@ -203,9 +203,19 @@ namespace CtripDAL.Model.Dao
             }
         }
 
+        /// <summary>
+        /// InsertProductsGen
+        /// </summary>
+        /// <param name="productsGen"></param>
+        /// <returns></returns>
         public int InsertProductsGen(ProductsGen productsGen)
         {
-            throw new NotImplementedException();
+            var returnobj = baseDao.Insert(productsGen);
+            if (returnobj != null)
+            {
+                return Convert.ToInt32(returnobj);
+            }
+            return 0;
         }
     }
 }

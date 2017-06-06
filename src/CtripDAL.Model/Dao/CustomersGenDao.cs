@@ -205,9 +205,19 @@ namespace CtripDAL.Model.Dao
             }
         }
 
+        /// <summary>
+        /// Code was not auto generate this method
+        /// </summary>
+        /// <param name="customersGen"></param>
+        /// <returns></returns>
         public int InsertCustomersGen(CustomersGen customersGen)
         {
-            throw new NotImplementedException();
+            var returnobj = baseDao.Insert(customersGen);
+            if (returnobj !=null)
+            {
+                return Convert.ToInt32(returnobj);
+            }
+            return 0;
         }
     }
 }

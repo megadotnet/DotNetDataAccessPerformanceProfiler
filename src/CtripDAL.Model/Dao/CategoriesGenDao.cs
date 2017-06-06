@@ -193,7 +193,12 @@ namespace CtripDAL.Model.Dao
 
         public int InsertCategoriesGen(CategoriesGen categoriesGen)
         {
-            throw new NotImplementedException();
+            var returnobj = baseDao.Insert(categoriesGen);
+            if (returnobj != null)
+            {
+                return Convert.ToInt32(returnobj);
+            }
+            return 0;
         }
     }
 }

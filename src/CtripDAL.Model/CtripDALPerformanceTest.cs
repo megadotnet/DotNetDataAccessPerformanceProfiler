@@ -13,6 +13,8 @@
 // ***********************************************************************
 namespace CtripDAL.Model
 {
+    using CtripDAL.Model.Entity.DataModel;
+    using CtripDAL.Model.Interface.IDao;
     using DBPerformanceTest.Core;
     using System;
     using System.Collections.Generic;
@@ -25,6 +27,10 @@ namespace CtripDAL.Model
     /// </summary>
     public class CtripDALPerformanceTest : IPerformanceTest
     {
+        private ICategoriesGenDao categoriesGenDao = DALFactory.CategoriesGenDao;
+        private ICustomersGenDao customersGenDao = DALFactory.CustomersGenDao;
+        private IProductsGenDao productsGenDao = DALFactory.ProductsGenDao;
+
         /// <summary>
         /// FetchAllTest
         /// </summary>
@@ -32,7 +38,16 @@ namespace CtripDAL.Model
         /// <returns></returns>
         public long FetchAllTest(int repeatTime)
         {
-            throw new NotImplementedException();
+            return Utility.PerformanceWatch(
+       () =>
+       {
+           for (int i = 0; i < repeatTime; i++)
+           {
+               var categories = categoriesGenDao.GetAll();
+               var customer = customersGenDao.GetAll();
+               var product = productsGenDao.GetAll();
+           }
+       });
         }
 
         /// <summary>
@@ -42,7 +57,18 @@ namespace CtripDAL.Model
         /// <returns></returns>
         public long FetchSingleTest(int repeatTime)
         {
-            throw new NotImplementedException();
+            return Utility.PerformanceWatch(
+() =>
+{
+    for (int i = 0; i < repeatTime; i++)
+    {
+
+
+        var categories = categoriesGenDao.FindByPk(10);
+        var customer = customersGenDao.FindByPk("10");
+        var product = productsGenDao.FindByPk(10);
+    }
+});
         }
 
         /// <summary>
@@ -52,7 +78,51 @@ namespace CtripDAL.Model
         /// <returns></returns>
         public long WriteTest(int repeatTime)
         {
-            throw new NotImplementedException();
+            return Utility.PerformanceWatch(
+() =>
+{
+for (int i = 0; i < repeatTime; i++)
+{
+        var customer = new CustomersGen
+        {
+            CompanyName = "Newcvompanyname",
+            ContactName = "ccc",
+            Address = "asdcadsdws",
+            ContactTitle = "adsdf",
+            City = "ku2na",
+            Country = "chi2na",
+            Phone = "231",
+            PostalCode = "234",
+            Region = "ASIA",
+            CustomerID = "9011"
+        };
+
+        int customerIdFromDb=customersGenDao.InsertCustomersGen(customer);
+
+
+        var catagore = new CategoriesGen() { CategoryName = "xdf", Description = "asfb" };
+
+        int categoryIDfromDb=categoriesGenDao.InsertCategoriesGen(
+            catagore
+            );
+
+        var product = new ProductsGen
+        {
+            ProductName = "Blue Widget234",
+            UnitPrice = 35.56M,
+            CategoryID = categoryIDfromDb
+        };
+
+        productsGenDao.InsertProductsGen(product
+           );
+
+        productsGenDao.DeleteProductsGen(product);
+        customersGenDao.DeleteCustomersGen(customer);
+        categoriesGenDao.DeleteCategoriesGen(catagore);
+
+
+    }
+});
         }
     }
 }

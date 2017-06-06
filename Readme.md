@@ -47,6 +47,19 @@ DotNet DataAccess Component Performance Profiler
 ## RoadMap
 1. Prepare integrated with BenchmarkDotNet and DashBoard
 
+
+## Thoughts
+Most of those ORM/DataAccess frameworks have lots of features and requires lots of knowledge. Some seem very easy at the beginning but there are many things you shall care about:
+
+*   Caching
+*   Many-to-many relationships
+*   Lazy loading
+*   Inheritance
+*   Composite keys
+*   How to encapsulate infratructure from callers
+*   How SQL statements are generated
+*   How to make advanced database queries
+
 ## License
 Copyright (c) 2007-2017 Megadotnet Contributors
 

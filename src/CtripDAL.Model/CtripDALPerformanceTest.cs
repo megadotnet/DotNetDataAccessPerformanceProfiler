@@ -25,6 +25,8 @@ namespace CtripDAL.Model
     /// <summary>
     /// CtripDALPerformanceTest
     /// </summary>
+    /// <see cref="https://github.com/ctripcorp/dal/wiki/C%23%E5%AE%A2%E6%88%B7%E7%AB%AF-%E9%9B%86%E6%88%90%E8%AF%B4%E6%98%8E"/>
+    /// <remarks>CtripDAL support sharding database and tables</remarks>
     public class CtripDALPerformanceTest : IPerformanceTest
     {
         private ICategoriesGenDao categoriesGenDao = DALFactory.CategoriesGenDao;

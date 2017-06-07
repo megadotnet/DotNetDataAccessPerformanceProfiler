@@ -80,12 +80,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntLib5DAABAccessorsPerformanceTest.cs" />
+    <Compile Include="EntLib6\DaoGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DaoGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntLib6\DTOGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DTOGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntLib6\RepositoryGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryGenerator.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntLibDAABPerformanceTest.cs" />
     <Compile Include="EntLibRepository.cs" />
     <Compile Include="MyParameterMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\dalgeneratort4_af8149046b62\DataGenerationSolution\DataGenerationSolution\DG.Common\DG.Common.csproj">
+      <Project>{dbb51e26-33c1-47d1-9d99-01200ec8aa47}</Project>
+      <Name>DG.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBPerformanceTest.Core\DBPerformanceTest.Core.csproj">
       <Project>{D33E9D74-23AE-4657-A670-1718300138B8}</Project>
       <Name>DBPerformanceTest.Core</Name>
@@ -109,7 +128,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EntLib6\SQLServer.ttinclude" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntLib6\DaoGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DaoGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntLib6\DTOGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DTOGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntLib6\RepositoryGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RepositoryGenerator.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

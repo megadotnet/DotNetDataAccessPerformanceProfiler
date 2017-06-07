@@ -67,6 +67,8 @@
     <Compile Include="DataAccessorFactory.cs" />
     <Compile Include="EntDAABModelTest.cs" />
     <Compile Include="EnterpriseLibraryDataAccessor.cs" />
+    <Compile Include="Entlib6\CountryGeneratorsTest.cs" />
+    <Compile Include="Entlib6\ExtensionMethodTest.cs" />
     <Compile Include="IDataAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestIUnitOfWork.cs" />
@@ -78,9 +80,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\dalgeneratort4_af8149046b62\DataGenerationSolution\DataGenerationSolution\DG.Common\DG.Common.csproj">
+      <Project>{dbb51e26-33c1-47d1-9d99-01200ec8aa47}</Project>
+      <Name>DG.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DBPerformanceTest.Core\DBPerformanceTest.Core.csproj">
       <Project>{D33E9D74-23AE-4657-A670-1718300138B8}</Project>
       <Name>DBPerformanceTest.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EntDAAB.Model\EntDAAB.Model.csproj">
+      <Project>{93885130-e4eb-4d18-8d4c-3c22a8d890a6}</Project>
+      <Name>EntDAAB.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\EntityFrameworkTest\EntityFrameworkV1.Model.csproj">
       <Project>{C95091CC-808C-46DB-A344-11BFBF3DA8AB}</Project>

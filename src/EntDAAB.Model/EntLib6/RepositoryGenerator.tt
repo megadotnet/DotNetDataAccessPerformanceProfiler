@@ -1,0 +1,70 @@
+﻿<#@ include file="SQLServer.ttinclude" #>
+using System.Collections.Generic;
+using DG.Common;
+
+namespace <#=Namespace #>
+{
+<#
+
+    var tables = LoadTables();
+
+    foreach(Table tbl in tables)
+    {
+	   
+#>
+public class <#=tbl.ClassName#>Repository:IRepository<<#=tbl.ClassName#>>
+{
+   		private readonly <#=tbl.ClassName#>Dao _<#=tbl.ClassName.ToLower()#>Dao;
+        public <#=tbl.ClassName#>Repository()
+        {
+            _<#=tbl.ClassName.ToLower()#>Dao = new <#=tbl.ClassName#>Dao();
+        }
+        public List<<#=tbl.ClassName#>> GetAllBySortingAndPaged(SortDefinitions sortDefinitions, int startIndex, int pageSize)
+        {
+            return _<#=tbl.ClassName.ToLower()#>Dao.Get<#=tbl.QueryableName#>(sortDefinitions, startIndex, pageSize);
+        }
+
+        public List<<#=tbl.ClassName#>> GetAllBySorting(SortDefinitions sortDefinitions)
+        {
+            return _<#=tbl.ClassName.ToLower()#>Dao.Get<#=tbl.QueryableName#>(sortDefinitions, -1, 0);
+        }
+
+        public List<<#=tbl.ClassName#>> GetAll()
+        {
+            return _<#=tbl.ClassName.ToLower()#>Dao.Get<#=tbl.QueryableName#>(null, -1, 0);
+        }
+    <# 
+	if(tbl.Columns.Any(c=>c.AutoIncrement==true))
+	{
+	#>
+        public <#=tbl.ClassName#> GetById(object id)
+        {
+           return _<#=tbl.ClassName.ToLower()#>Dao.Get<#=tbl.ClassName#>ById(id);
+        }
+	<#}
+	else if(IsKeyColumnsRequire(tbl.Columns.SingleOrDefault(c=>c.AutoIncrement==true),tbl.Columns.Where(c=>c.IsPK==true)))
+	{
+	#>
+	public <#=tbl.ClassName#> GetByKey(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+           return _<#=tbl.ClassName.ToLower()#>Dao.Get<#=tbl.ClassName#>ByKey(<#=tbl.ClassName.ToLower()#>);
+        }
+	<# } #>
+        public long Insert(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+           return _<#=tbl.ClassName.ToLower()#>Dao.Insert(<#=tbl.ClassName.ToLower()#>);
+        }
+
+        public void Update(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            _<#=tbl.ClassName.ToLower()#>Dao.Update(<#=tbl.ClassName.ToLower()#>);
+        }
+
+        public void Delete(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            _<#=tbl.ClassName.ToLower()#>Dao.Delete(<#=tbl.ClassName.ToLower()#>);
+        }
+}
+<#}#>
+
+}

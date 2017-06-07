@@ -1,0 +1,363 @@
+﻿<#@ include file="SQLServer.ttinclude" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Data;
+using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Data.Common;
+using DG.Common;
+
+namespace <#=Namespace #>
+{
+<#
+
+    var tables = LoadTables();
+
+    foreach(Table tbl in tables)
+    {
+		List<Column> columns = tbl.Columns;
+		
+	   
+#>
+public class <#=tbl.ClassName #>Dao
+
+{
+		<#
+		var identityCol = columns.SingleOrDefault(col=>col.AutoIncrement==true);
+		if(identityCol!=null)
+		{
+		#> 
+			private const string IdentityColumn = "<#=identityCol.CleanName#>"; 
+		<#
+		}
+		
+		foreach(var col in columns)
+		{
+			if(col.AutoIncrement ==true) continue;
+		#>
+		private const string <#=col.CleanName#>Column ="<#=col.CleanName#>";
+		<#
+		}
+		var nonIdentityColumns = columns.Where(p=>p.AutoIncrement ==false).Select(p=>p.CleanName+"Column").ToList();
+		var nonIdentityCOlumnsString = string.Join(",",nonIdentityColumns.ToArray());
+	
+		var totalColumnsString =(identityCol!=null)? string.Format("{0},{1}","IdentityColumn",nonIdentityCOlumnsString):nonIdentityCOlumnsString;
+		var keyColumns =tbl.Columns.Where(col=>col.IsPK == true);
+		var keyColumnsNames =string.Join(",",keyColumns.Select(p=>string.Format(@"""{0}""",p.CleanName)).ToArray());;
+		#>
+		private static readonly string[] ColumnCollections = new[] { <#= totalColumnsString #>};
+        private readonly string _columnCollectionSelectString = string.Join(",", ColumnCollections);
+        private static readonly string[] KeyColumns = new string[] { <#= keyColumnsNames #> };
+        private static readonly string WhereClause = KeyColumns.JoinFormat(" AND ", "{0} = @{0}");
+		private readonly Database _database;
+      
+        public <#=tbl.ClassName#>Dao()
+        {
+            _database = DatabaseFactory.CreateDatabase("<#=ConnectionStringName#>");
+        }
+
+        public <#=tbl.ClassName#>Dao(Database database)
+        {
+            _database = database;
+        }
+		
+		private string GetSortText(SortDefinitions sortDefinitions)
+		{
+			string sortDefinition;
+            if(sortDefinitions!=null && sortDefinitions.SoftItems.Count>0)
+            {
+                sortDefinition = string.Join(" , ", sortDefinitions.SoftItems.Select(p=> string.Format("{0} {1}", p.ColumnName , (p.SortOrder==SortOrder.None)?"":p.SortOrder.ToString())));
+				
+				sortDefinition = string.Format(" ORDER BY {0}", sortDefinition);				
+            }
+			else
+			{
+				 sortDefinition = "ORDER BY " + string.Join(",", KeyColumns);
+			}		
+			return sortDefinition;
+		}
+		
+		public List<<#=tbl.ClassName#>> Get<#=tbl.QueryableName#>( SortDefinitions sortDefinitions , int startIndex, int pageSize)
+        {
+		    string sqlText;
+			var sortText = GetSortText(sortDefinitions);
+			if(startIndex>-1 && pageSize>0)
+			{
+			  sqlText = GetPagedQuery(sortText, startIndex, pageSize);
+			}
+			else
+			 sqlText = Get<#=tbl.ClassName#>SQL();
+
+            return _database.CreateSqlStringAccessor<<#=tbl.ClassName#>>(sqlText).Execute().ToList();
+        }
+		
+		
+		
+
+        public List<<#=tbl.ClassName#>> Get<#=tbl.QueryableName#>()
+        {
+
+            return _database.CreateSqlStringAccessor<<#=tbl.ClassName#>>(Get<#=tbl.ClassName#>SQL()).Execute().ToList();
+        }
+
+        <# if(identityCol!=null)
+		{
+		#>
+        public <#=tbl.ClassName#> Get<#=tbl.ClassName#>ById(object id)
+        {
+            return _database.CreateSqlStringAccessor<<#=tbl.ClassName#>>(Get<#=tbl.ClassName#>ByIdSQL(), new <#=tbl.ClassName#>SelectIdParameterMapper()).Execute(id).SingleOrDefault();
+        }
+		
+        private class <#=tbl.ClassName#>SelectIdParameterMapper : IParameterMapper
+        {
+		   public void AssignParameters(DbCommand command, object[] parameterValues)
+            {
+				var parameter = command.CreateParameter();
+                parameter.ParameterName = string.Format("@{0}", IdentityColumn);
+                parameter.Value = parameterValues[0];
+                command.Parameters.Add(parameter);
+			}
+        }
+		
+		private string Get<#=tbl.ClassName#>ByIdSQL()
+        {
+            var sql = string.Format(@"SELECT  {0}
+                            FROM 
+                                <#= tbl.QueryableName#>
+                            WHERE
+                                {1}
+                                       ", _columnCollectionSelectString, string.Format("{0} = @{0}",IdentityColumn));
+            return sql;
+        }
+		<#
+		}		
+		if(IsKeyColumnsRequire(identityCol, keyColumns))
+		{
+		#>
+		public <#=tbl.ClassName#> Get<#=tbl.ClassName#>ByKey(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            return _database.CreateSqlStringAccessor<<#=tbl.ClassName#>>(Get<#=tbl.ClassName#>ByKeySQL(), new <#=tbl.ClassName#>SelectKeyParameterMapper()).Execute(<#=KeyColumnsValues(tbl.ClassName,keyColumns)#>).SingleOrDefault();
+		}
+		
+		private string Get<#=tbl.ClassName#>ByKeySQL()
+        {
+            var sql = string.Format(@"SELECT  {0}
+                            FROM 
+                                <#= tbl.QueryableName#>
+                            WHERE
+                                {1}
+                                       ", _columnCollectionSelectString, WhereClause);
+            return sql;
+        }
+		
+		public class <#=tbl.ClassName#>SelectKeyParameterMapper : IParameterMapper
+        {
+            public void AssignParameters(DbCommand command, object[] parameterValues)
+            {
+                for (int i = 0; i < KeyColumns.Count(); i++)
+                {
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = string.Format("@{0}", KeyColumns[i]);
+                    parameter.Value = parameterValues[i];
+                    command.Parameters.Add(parameter);
+                }
+               
+
+            }
+		}
+		<#
+		}
+		#>
+        public long Insert(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        { 			
+			var command = _database.GetSqlStringCommand(Insert<#=tbl.ClassName#>SQL());
+		   <# if(identityCol!=null)
+			{
+			#>
+			var parameter = command.CreateParameter();
+            parameter.ParameterName = string.Format("@{0}", IdentityColumn);
+            parameter.DbType = DbType.Int64;
+            parameter.Direction = ParameterDirection.Output;
+            command.Parameters.Add(parameter);
+			<#
+			}
+			#>
+            AddInsertParameters(command, <#=tbl.ClassName.ToLower()#>);
+            _database.ExecuteNonQuery(command);
+			<# if(identityCol!=null)
+			{
+			#>
+            var id =Convert.ToInt64( parameter.Value);
+            return id;
+			<#
+			}
+			else
+			{
+			#>
+			return 1;
+			<#
+			}#>
+        }
+
+        public void Update(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            var command = _database.GetSqlStringCommand(Update<#=tbl.ClassName#>SQL());
+            AddUpdateParameters(command, <#=tbl.ClassName.ToLower()#>);
+            _database.ExecuteNonQuery(command);
+        }
+
+        public void Delete(<#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            var command = _database.GetSqlStringCommand(Delete<#=tbl.ClassName#>SQL());
+			<# if(identityCol!=null)
+			{
+			#>
+            AddIdentityColumn(command, <#=tbl.ClassName.ToLower()#>);
+			<#}
+			else
+			{#>
+			AddKeyColumns(command, <#=KeyColumnsValues(tbl.ClassName,keyColumns)#>);
+			<#}
+			#>
+            _database.ExecuteNonQuery(command);
+        }
+		<# if(identityCol==null)
+		{#>
+		private void AddKeyColumns(DbCommand command, params  object[] paramValues)
+        {
+            for (int i = 0; i < KeyColumns.Count(); i++)
+            {
+                DbParameter parameter = command.CreateParameter();
+                parameter.ParameterName = string.Format("@{0}", KeyColumns[i]);
+                parameter.Value = paramValues[i];
+                command.Parameters.Add(parameter);
+            }
+           
+        }
+		<#}#>
+		
+		private void AddInsertParameters(DbCommand command, <#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+            DbParameter parameter = null;
+        	<# 
+			foreach( Column col in tbl.Columns)
+			{
+			if(col.AutoIncrement == false)
+			{
+			#>
+		    parameter = command.CreateParameter();
+            parameter.ParameterName = string.Format("@{0}",@<#=col.CleanName#>Column);
+			<# if(col.IsNullable ==true)
+			{
+			#>
+			parameter.Value = (object)<#=tbl.ClassName.ToLower()#>.<#=col.CleanName#>??DBNull.Value;
+			<#
+			}
+			else
+			{
+			#>
+            parameter.Value = <#=tbl.ClassName.ToLower()#>.<#=col.CleanName#>;
+            <#
+			}
+			#>
+			command.Parameters.Add(parameter);
+		
+			<#
+			}
+			}
+			#>           
+        }		
+		
+		private void AddUpdateParameters(DbCommand command, <#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+		<#if(identityCol!=null){#>
+            AddIdentityColumn(command, <#=tbl.ClassName.ToLower()#>);
+		<#}#>
+            AddInsertParameters(command, <#=tbl.ClassName.ToLower()#>);
+        }
+		<#if(identityCol!=null){#>
+		
+        private void AddIdentityColumn(DbCommand command, <#=tbl.ClassName#> <#=tbl.ClassName.ToLower()#>)
+        {
+		  
+            var parameter = command.CreateParameter();
+            parameter.ParameterName = string.Format("@{0}", IdentityColumn);
+            parameter.Value = <#=tbl.ClassName.ToLower()#>.<#=identityCol.CleanName#>;
+            command.Parameters.Add(parameter);
+
+		}
+		<#
+		} 
+		#>
+		
+		private string Get<#=tbl.ClassName#>SQL()
+        {
+            var sql = string.Format(@" SELECT  {0} 
+                                          FROM 
+                                                <#= tbl.QueryableName#>
+                                       ", _columnCollectionSelectString);
+            return sql;
+        }      
+
+		private string GetPagedQuery( string sqlText, int startIndex , int pageSize)
+		{
+		  	var endIndex = startIndex + pageSize;
+          	startIndex = startIndex + 1;
+
+          	var sql = string.Format(@"SELECT TOP {0} {4} 
+						FROM ( 
+							SELECT    {4} , ROW_NUMBER() OVER ({1}) AS ROW 
+						    FROM  <#= tbl.QueryableName#> ) AS WithRowNumber
+					    WHERE
+                            ROW BETWEEN {2} AND {3} {1}", pageSize, sqlText, startIndex, endIndex, _columnCollectionSelectString);
+
+          	return sql;		    
+		}
+		
+        private string Insert<#=tbl.ClassName#>SQL()
+        {
+			var nonIdentColumns= <#if(identityCol==null){#>ColumnCollections<#}else{#>ColumnCollections.Except(new[]{IdentityColumn}).ToList()<# } #>;
+		 	var sql = string.Format(@" INSERT INTO
+                            <#= tbl.QueryableName#> (
+                              {0}
+                            )
+                            VALUES
+                            (
+                                {1}
+                            ) ;
+                                       ", nonIdentColumns.JoinFormat(",","{0}"), nonIdentColumns.JoinFormat(",", "@{0}"));
+            <#
+			if(identityCol!=null)
+            {
+			#>
+            sql = string.Format("{0} SET @{1} = SCOPE_IDENTITY()", sql, IdentityColumn);
+            <#
+			}#>
+            return sql;
+        }
+
+        private string Update<#=tbl.ClassName#>SQL()
+        {
+		 	var sql = string.Format(@" UPDATE
+                                 <#= tbl.QueryableName#>
+                            SET
+                               {1}
+                            WHERE 
+                                  {0}
+                                       ", WhereClause, ColumnCollections.Except(KeyColumns).ToArray().JoinFormat(" , ", "{0} = @{0}"));
+            return sql;
+        }
+
+        private string Delete<#=tbl.ClassName#>SQL()
+        { 
+		 	var sql = string.Format(@" DELETE  FROM
+                              <#= tbl.QueryableName#>
+                            WHERE 
+                                {0}           
+                                       ", <#if(identityCol!=null){#>string.Format("{0}=@{0}",IdentityColumn)<#}else{#>WhereClause<# } #>);
+            return sql;
+        }
+  
+	}
+<#}#>
+}

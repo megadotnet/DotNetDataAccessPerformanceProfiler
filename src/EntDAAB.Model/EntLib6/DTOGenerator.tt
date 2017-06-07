@@ -1,0 +1,34 @@
+﻿<#@ include file="SQLServer.ttinclude" #>
+using System;
+
+namespace <#=Namespace #>
+{
+<#
+
+    var tables = LoadTables();
+
+    foreach(Table tbl in tables)
+    {
+	   
+#>
+public class <#=tbl.ClassName #>
+{
+  <# foreach(Column col in tbl.Columns)
+{
+   if(col.SysType !="string" && col.SysType !="byte[]" && col.IsNullable==true)
+   {
+	#>
+	public <#=col.SysType#>? <#=col.CleanName#> {get;set;}
+
+<#
+}
+else
+{
+#>
+	public <#=col.SysType#> <#=col.CleanName#> {get;set;}
+
+<#}
+}#>
+}
+<#}#>
+}

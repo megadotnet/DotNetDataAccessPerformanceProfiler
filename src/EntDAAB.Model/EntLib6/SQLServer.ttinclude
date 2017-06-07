@@ -17,8 +17,9 @@
 <#@ import namespace="System.Data"#>
 
 <#+
+    //Following value you need to modify
   	const string Namespace = "DataGenerator";
-    const string ConnectionStringName = "DataGeneratorTable";
+    const string ConnectionStringName = "TestDB";
 	const string ConnectionString = @"data source=.;initial catalog=TestPerformaceDB;integrated security=True";
     
     //this is a list of tables you don't want generated

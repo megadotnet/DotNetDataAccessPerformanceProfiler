@@ -7,8 +7,11 @@ using System;
 
 namespace DataGeneratorTest1
 {
+    /// <summary>
+    /// ProductsGeneratorsTest
+    /// </summary>
     [TestFixture]
-    class CountryGeneratorsTest
+    public class ProductsGeneratorsTest
     {
         private ProductsRepository _productRepository;
 

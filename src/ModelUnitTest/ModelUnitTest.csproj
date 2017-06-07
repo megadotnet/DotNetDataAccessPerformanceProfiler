@@ -50,9 +50,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,7 +66,7 @@
     <Compile Include="DataAccessorFactory.cs" />
     <Compile Include="EntDAABModelTest.cs" />
     <Compile Include="EnterpriseLibraryDataAccessor.cs" />
-    <Compile Include="Entlib6\CountryGeneratorsTest.cs" />
+    <Compile Include="Entlib6\ProductsGeneratorsTest.cs" />
     <Compile Include="Entlib6\ExtensionMethodTest.cs" />
     <Compile Include="IDataAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +95,9 @@
       <Project>{C95091CC-808C-46DB-A344-11BFBF3DA8AB}</Project>
       <Name>EntityFrameworkV1.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -125,17 +125,19 @@ namespace ModelUnitTest
         /// IEFs the unit of work test.
         /// </summary>
         [Test]
-        [ExpectedException(typeof(NotImplementedException))]
         public void TestIUnitOfWorkInterface()
         {
-            // arrange
-            // mock
-            var mockunit = new Mock<IUnitOfWork>();
+            Assert.Throws<NotImplementedException>(() => {
+                // arrange
+                // mock
+                var mockunit = new Mock<IUnitOfWork>();
 
             mockunit.Setup(u => u.Save()).Throws(new NotImplementedException());
 
             // assert
             mockunit.Object.Save();
+            });
+
         }
 
         #endregion

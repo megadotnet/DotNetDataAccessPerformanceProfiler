@@ -32,7 +32,7 @@ public class CustomersDao
       
         public CustomersDao()
         {
-            _database = DatabaseFactory.CreateDatabase("DataGeneratorTable");
+            _database = DatabaseFactory.CreateDatabase("TestDB");
         }
 
         public CustomersDao(Database database)
@@ -287,7 +287,7 @@ public class CategoriesDao
       
         public CategoriesDao()
         {
-            _database = DatabaseFactory.CreateDatabase("DataGeneratorTable");
+            _database = DatabaseFactory.CreateDatabase("TestDB");
         }
 
         public CategoriesDao(Database database)
@@ -541,7 +541,7 @@ public class ProductsDao
       
         public ProductsDao()
         {
-            _database = DatabaseFactory.CreateDatabase("DataGeneratorTable");
+            _database = DatabaseFactory.CreateDatabase("TestDB");
         }
 
         public ProductsDao(Database database)

@@ -56,6 +56,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arch.Data", "CtripDAL.Arch.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DG.Common", "..\..\..\dalgeneratort4_af8149046b62\DataGenerationSolution\DataGenerationSolution\DG.Common\DG.Common.csproj", "{DBB51E26-33C1-47D1-9D99-01200EC8AA47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFramework.Utility", "IronFramework.Utility\IronFramework.Utility.csproj", "{70A400B0-6FE0-4007-AF35-E99835F39922}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronFramework.Model", "IronFramework.Model\IronFramework.Model.csproj", "{1B03178F-60C9-4B41-A804-FD74A7192222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -235,6 +239,26 @@ Global
 		{DBB51E26-33C1-47D1-9D99-01200EC8AA47}.Performance|Any CPU.Build.0 = Release|Any CPU
 		{DBB51E26-33C1-47D1-9D99-01200EC8AA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBB51E26-33C1-47D1-9D99-01200EC8AA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.FlightRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.FlightRelease|Any CPU.Build.0 = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.JPRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.JPRelease|Any CPU.Build.0 = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Performance|Any CPU.ActiveCfg = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Performance|Any CPU.Build.0 = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70A400B0-6FE0-4007-AF35-E99835F39922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.FlightRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.FlightRelease|Any CPU.Build.0 = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.JPRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.JPRelease|Any CPU.Build.0 = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Performance|Any CPU.ActiveCfg = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Performance|Any CPU.Build.0 = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B03178F-60C9-4B41-A804-FD74A7192222}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +281,8 @@ Global
 		{55085801-6263-4B53-B6BF-E6326CF141C7} = {6542D568-8477-4120-9851-4517B2E54837}
 		{B97CD6E2-93E7-4E80-8DD8-8A2F7B6F71D3} = {55085801-6263-4B53-B6BF-E6326CF141C7}
 		{DBB51E26-33C1-47D1-9D99-01200EC8AA47} = {9E1FDCD5-A7EC-4B09-8674-D0A59EEC484B}
+		{70A400B0-6FE0-4007-AF35-E99835F39922} = {6542D568-8477-4120-9851-4517B2E54837}
+		{1B03178F-60C9-4B41-A804-FD74A7192222} = {6542D568-8477-4120-9851-4517B2E54837}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Data.6.0.1304.0\lib\NET45

@@ -36,7 +36,7 @@ namespace IronFramework.Model
         /// Alls enties 
         /// </summary>
         /// <returns>Alls enties</returns>
-		public IEnumerable<Product> All()
+		public IQueryable<Product> All()
 		{
 			return Repository.All();
 		}

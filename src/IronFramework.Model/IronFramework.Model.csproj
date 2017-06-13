@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -91,6 +91,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="IronFrameworkPerformanceTest.cs" />
     <Compile Include="IStoredProcedureFunctionsDAO.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
@@ -139,6 +140,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBPerformanceTest.Core\DBPerformanceTest.Core.csproj">
+      <Project>{D33E9D74-23AE-4657-A670-1718300138B8}</Project>
+      <Name>DBPerformanceTest.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IronFramework.Utility\IronFramework.Utility.csproj">
       <Project>{70a400b0-6fe0-4007-af35-e99835f39922}</Project>
       <Name>IronFramework.Utility</Name>

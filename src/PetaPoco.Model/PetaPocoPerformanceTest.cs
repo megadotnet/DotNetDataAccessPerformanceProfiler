@@ -94,7 +94,7 @@ namespace PetaPoco.Model
             Phone = "231",
             PostalCode = "234",
             Region = "ASIA",
-            CustomerID = "100"+ new Random().Next(0,100)
+            CustomerID = "210"+ new Random().Next(0,100)
         };
 
         // Tell PetaPoco to insert it

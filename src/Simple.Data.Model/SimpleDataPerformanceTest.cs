@@ -95,7 +95,7 @@ namespace Simple.Data.Model
                    Phone = "231",
                    PostalCode = "234",
                    Region = "asia",
-                   CustomerID = "9011"
+                   CustomerID = "101" + new Random().Next(0, 100)
                };
 
                _db.Customers.Insert(customer);

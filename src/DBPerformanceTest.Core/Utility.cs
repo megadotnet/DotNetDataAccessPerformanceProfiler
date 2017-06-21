@@ -60,6 +60,24 @@ namespace DBPerformanceTest.Core
             return sw.ElapsedMilliseconds;
         }
 
+        /// <summary>
+        /// PerformanceWatchWithTimes
+        /// </summary>
+        /// <param name="targetaction"></param>
+        /// <param name="repeatTime"></param>
+        /// <returns></returns>
+        public static long PerformanceWatchWithTimes(Action targetaction,int repeatTime)
+        {
+            return Utility.PerformanceWatch(
+   () =>
+   {
+       for (int i = 0; i < repeatTime; i++)
+       {
+           targetaction();
+       }
+   });
+        }
+
         #endregion
     }
 }

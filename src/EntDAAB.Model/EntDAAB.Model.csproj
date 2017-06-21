@@ -79,7 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntLib5DAABAccessorsPerformanceTest.cs" />
+    <Compile Include="EntLib6RepositoryPerformanceTest.cs" />
     <Compile Include="EntLib6\DaoGenerator.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,8 +96,6 @@
       <DependentUpon>RepositoryGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="EntLibDAABPerformanceTest.cs" />
-    <Compile Include="EntLibRepository.cs" />
-    <Compile Include="MyParameterMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +128,7 @@
   <ItemGroup>
     <None Include="EntLib6\SQLServer.ttinclude" />
     <None Include="packages.config" />
+    <None Include="Readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EntLib6\DaoGenerator.tt">

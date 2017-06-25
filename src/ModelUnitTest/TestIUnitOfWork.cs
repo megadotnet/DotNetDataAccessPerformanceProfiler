@@ -18,6 +18,8 @@ namespace ModelUnitTest
     using Moq;
 
     using NUnit.Framework;
+    using System.Security.Cryptography;
+    using DBPerformanceTest.Core;
 
     /// <summary>
     /// The test i unit of work.
@@ -97,7 +99,7 @@ namespace ModelUnitTest
         [Test]
         public void TestGetDBDataUseDI()
         {
-            IRepository<Products> productRepository = RepositoryHelper.GetRepository<Products>();
+            EntityFrameworkTest.IRepository<Products> productRepository = RepositoryHelper.GetRepository<Products>();
             IEnumerable<Products> resultset = productRepository.Find(p => p.ProductID == 1);
 
             Assert.IsNotNull(resultset);
@@ -138,6 +140,16 @@ namespace ModelUnitTest
             mockunit.Object.Save();
             });
 
+        }
+
+        [Test]
+        public void GetNumberTest()
+        {
+            for(int i=0;i<10;i++)
+            {
+                Console.WriteLine(new RNGCryptoServiceProvider().GetNextInt32(51323));
+            }
+           
         }
 
         #endregion

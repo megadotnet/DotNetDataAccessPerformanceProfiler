@@ -12,6 +12,7 @@ namespace DBPerformanceTest.Core
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Security.Cryptography;
 
     /// <summary>
     /// Utility
@@ -76,6 +77,40 @@ namespace DBPerformanceTest.Core
            targetaction();
        }
    });
+        }
+
+        /// <summary>
+        /// GetNextInt32
+        /// </summary>
+        /// <param name="rng"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        /// <example><code>
+        ///    new RNGCryptoServiceProvider().GetNextInt32(343)
+        /// </code></example>
+        public static int GetNextInt32(this RNGCryptoServiceProvider rng, int maxValue)
+        {
+            if (maxValue < 1)
+                throw new ArgumentOutOfRangeException("maxValue", maxValue, "Value must be positive.");
+
+            var buffer = new byte[4];
+            int bits, val;
+
+            if ((maxValue & -maxValue) == maxValue)  // is maxValue an exact power of 2
+            {
+                rng.GetBytes(buffer);
+                bits = BitConverter.ToInt32(buffer, 0);
+                return bits & (maxValue - 1);
+            }
+
+            do
+            {
+                rng.GetBytes(buffer);
+                bits = BitConverter.ToInt32(buffer, 0) & 0x7FFFFFFF;
+                val = bits % maxValue;
+            } while (bits - val + (maxValue - 1) < 0);
+
+            return val;
         }
 
         #endregion

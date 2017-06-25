@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using DBPerformanceTest.Core;
 
 namespace EntDAAB.Model
 {
@@ -69,6 +71,8 @@ namespace EntDAAB.Model
             }, repeatTime);
         }
 
+
+
         /// <summary>
         /// WriteTest
         /// </summary>
@@ -78,11 +82,43 @@ namespace EntDAAB.Model
         {
             return Utility.PerformanceWatchWithTimes(() =>
             {
-                var customers = _customersRepository.GetByKey(new Customers { CustomerID = "10" });
+                //Insert customer
+                var customer = new Customers
+                {
+                    CompanyName = "Newcvompanyname",
+                    ContactName = "ccc",
+                    Address = "asdcadsdws",
+                    ContactTitle = "adsdf",
+                    City = "ku2na",
+                    Country = "chi2na",
+                    Phone = "231",
+                    PostalCode = "234",
+                    Region = "ASIA",
+                    CustomerID = new RNGCryptoServiceProvider().GetNextInt32(51323).ToString()
+                };
+        
+                _customersRepository.Insert(customer);
 
-                var products = _productRepository.GetById(10);
+                //insert category
+                var cat = new Categories { CategoryName = "Widgetdss234"
+                    , Description = "Widgetss are 43the ……", Picture=new byte[] { 1,3} };
+                cat.CategoryID=Convert.ToInt32(_categoriesRepository.Insert(cat));
 
-                var categories = _categoriesRepository.GetById(10);
+                //update Category
+                cat.CategoryName = "Namehaschange";
+                _categoriesRepository.Update(cat);
+
+                //insert product
+                var newProduct = new Products { ProductName = "Blue Widget234", UnitPrice = 35.56M, CategoryID = cat.CategoryID };
+                newProduct.ProductID=Convert.ToInt32(_productRepository.Insert(newProduct));
+
+                //update product
+                newProduct.ProductName = "productchange1";
+                _productRepository.Update(newProduct);
+
+                //Delete them
+                _productRepository.Delete(newProduct);
+                _categoriesRepository.Delete(cat);
 
             }, repeatTime);
         }
